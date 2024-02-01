@@ -22,6 +22,6 @@ else
 fi
 for DEP in $@;do
 	if ! command -v $DEP &> /dev/null;then
-		$PKG_MGR $DEP}
+		$PKG_MGR $DEP
 	fi
 done
