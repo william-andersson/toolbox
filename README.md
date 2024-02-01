@@ -15,3 +15,6 @@
 
 - All scripts' install.sh file should include any dependencies in the DEPENDENCIES=("") variable,</br>
   these will be installed by the depin.sh script on systems with apt,dnf or zypper.
+
+
+## Happy scripting! :)
