@@ -16,6 +16,7 @@ if [ -n "$1" ]; then
 		cd $1
 		echo "Installing $1"
 		sleep 1
+		chmod 775 install.sh
 		./install.sh
 		cd ..
 	fi
@@ -24,6 +25,7 @@ else
 		cd $tool
 		echo "Installing ${tool%/} ..."
 		sleep 1
+		chmod 775 install.sh
 		./install.sh
 		cd ..
 	done
