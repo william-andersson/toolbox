@@ -21,6 +21,7 @@ echo "Configuring build.cfg ..."
 sleep .2
 echo "NAME=\"$1\"" >> $1/build.cfg
 echo "COPY=\"William Andersson 2024\"" >> $1/build.cfg
+echo "WEB=\"https://github.com/william-andersson\"" >> $1/build.cfg
 echo "LICENSE=\"GPL\"" >> $1/build.cfg
 sleep 1
 
