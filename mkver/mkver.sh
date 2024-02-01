@@ -28,6 +28,7 @@ echo "Package name: $NAME-$GET_VER_NUM.tar"
 echo "Version: $GET_VER_NUM" > INFO
 echo "Build date: $TIMESTAMP" >> INFO
 echo "Copyright: $COPY" >> INFO
+echo "Website: $WEB" >> INFO
 echo "License: $LICENSE" >> INFO
 tar --exclude='builds' -cpvf ./builds/$NAME-$GET_VER_NUM.tar *
 sleep 1
