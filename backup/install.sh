@@ -25,6 +25,8 @@ else
 	echo "File /etc/systemd/system/toolbox-backup.service already exists, skipping..."
 fi
 
-/usr/bin/toolbox-depin ${DEPENDENCIES[@]}
+if [ ! -z "$DEPENDENCIES" ];then
+	/usr/bin/toolbox-depin ${DEPENDENCIES[@]}
+fi
 
 echo "Done."
