@@ -1,5 +1,5 @@
 #!/bin/bash
-VERSION=3.0
+VERSION=3.1
 if [ ! $1 ];then
 	echo "Create new toolbox-script from template in current location."
 	echo -e "Usage: toolbox-create NAME\n"
@@ -38,10 +38,11 @@ echo "DEPENDENCIES=(\"\")" >> $1/install.sh
 echo "" >> $1/install.sh
 echo "install -v -C -m 775 -o root $1.sh /usr/bin/toolbox-$1" >> $1/install.sh
 echo "" >> $1/install.sh
-echo "/usr/bin/toolbox-depin \${DEPENDENCIES[@]}" >> $1/install.sh
+echo "if [ ! -z \"\$DEPENDENCIES\" ];then" >> $1/install.sh
+echo "    /usr/bin/toolbox-depin \${DEPENDENCIES[@]}" >> $1/install.sh
+echo "fi" >> $1/install.sh
 echo "" >> $1/install.sh
 echo "echo \"Done.\"" >> $1/install.sh
-
 
 echo "Configuring $1.sh ..."
 sleep .2
