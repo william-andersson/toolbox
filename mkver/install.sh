@@ -9,6 +9,8 @@ DEPENDENCIES=("")
 # Copy scripts
 install -v -C -m 775 -o root mkver.sh /usr/bin/toolbox-mkver
 
-/usr/bin/toolbox-depin ${DEPENDENCIES[@]}
+if [ ! -z "$DEPENDENCIES" ];then
+	/usr/bin/toolbox-depin ${DEPENDENCIES[@]}
+fi
 
 echo "Done."
