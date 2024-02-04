@@ -1,13 +1,14 @@
 #!/bin/bash
 #
-# Copyright William Andersson 2024
-# https://github.com/william-andersson
+# Application: backup (Github version)
+# Copyright:   William Andersson 2024
+# Website:     https://github.com/william-andersson
+# License:     GPL
+#
+#
+#
 #
 VERSION=6.2
-if [[ $EUID -ne 0 ]]; then
-   echo "This script must be run as root"
-   exit 1
-fi
 
 NAME=${0##*/}
 source /etc/toolbox-backup.cfg
@@ -24,7 +25,7 @@ if [ ! $(cat /etc/toolbox-backup.cfg | grep TIMER) ];then
 fi
 
 function view_help(){
-	echo -e "$NAME Version $VERSION"
+	echo -e "$0 Version $VERSION"
 	echo -e "\nIMPORTANT: This script can only cope with one option at a time"
 	echo -e "\t\tand in exact order described under usage.\n"
 	echo -e "\t\tCurrent source path: $SRC"
@@ -226,6 +227,11 @@ function restore_from_backup(){
 	done
 }
 
+if [[ $EUID -ne 0 ]]; then
+	view_help
+	echo -e "\nThis script must be run as root!"
+	exit 1
+fi
 
 ##### Script starts here! #####
 if [ "$1" == "--version" ] || [ "$1" == "--help" ]; then
