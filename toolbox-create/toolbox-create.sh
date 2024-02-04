@@ -1,8 +1,14 @@
 #!/bin/bash
+#
+# Application: toolbox-create (Github version)
+# Copyright:   William Andersson 2024
+# Website:     https://github.com/william-andersson
+# License:     GPL
+#
 VERSION=3.1
 if [ ! $1 ];then
 	echo "Create new toolbox-script from template in current location."
-	echo -e "Usage: toolbox-create NAME\n"
+	echo -e "Usage: toolbox-create <NAME>\n"
 	exit 0
 fi
 echo "Creating directory $1 ..."
@@ -13,6 +19,7 @@ echo "Creating files ..."
 sleep .2
 touch $1/TODO
 touch $1/CHANGELOG
+touch $1/README
 touch $1/build.cfg
 touch $1/install.sh
 touch $1/$1.sh
@@ -24,7 +31,6 @@ echo "COPY=\"William Andersson 2024\"" >> $1/build.cfg
 echo "WEB=\"https://github.com/william-andersson\"" >> $1/build.cfg
 echo "LICENSE=\"GPL\"" >> $1/build.cfg
 sleep 1
-
 
 echo "Configuring install.sh ..."
 sleep .2
@@ -43,6 +49,7 @@ echo "    /usr/bin/toolbox-depin \${DEPENDENCIES[@]}" >> $1/install.sh
 echo "fi" >> $1/install.sh
 echo "" >> $1/install.sh
 echo "echo \"Done.\"" >> $1/install.sh
+
 
 echo "Configuring $1.sh ..."
 sleep .2
