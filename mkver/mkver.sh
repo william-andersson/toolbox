@@ -5,14 +5,19 @@
 # Website:     https://github.com/william-andersson
 # License:     GPL
 #
-VERSION=1.5
+VERSION=1.6
 if [ -z "$1" ] || [ "$1" == "--help" ];then
 	echo -e "Usage: $0 <OPTION>"
 	echo -e "Create new version for source,package or github\n"
 	echo -e "Options"
 	echo -e "--src\t\tCreate new source archive."
+	echo -e "\t\tMakes a backup of current version in ./builds/src/"
 	echo -e "--pkg\t\tCreate new package."
-	echo -e "--git\t\tCreate new github version.\n"
+	echo -e "\t\tMakes a distributable package in ./builds/pkg/"
+	echo -e "\t\texcluding unnecessary files."
+	echo -e "--git\t\tCreate new github version."
+	echo -e "\t\tMakes a copy of current version in ./builds/pkg/"
+	echo -e "\t\texclude unnecessary files and write a header to all .sh files."
 	exit 0
 fi
 
@@ -53,7 +58,7 @@ if [ "$1" == "--src" ];then
 	echo "Copyright: $COPY" >> INFO
 	echo "Website: $WEB" >> INFO
 	echo "License: $LICENSE" >> INFO
-	tar --exclude={'builds','build.cfg','CHANGELOG','TODO','README'} -cpvf ./builds/src/$NAME-$GET_VER_NUM.tar *
+	tar --exclude='builds' -cpvf ./builds/src/$NAME-$GET_VER_NUM.tar *
 	rm INFO
 fi
 
