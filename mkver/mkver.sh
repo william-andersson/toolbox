@@ -5,7 +5,7 @@
 # Website:     https://github.com/william-andersson
 # License:     GPL
 #
-VERSION=1.6
+VERSION=1.7
 if [ -z "$1" ] || [ "$1" == "--help" ];then
 	echo -e "Usage: $0 <OPTION>"
 	echo -e "Create new version for source,package or github\n"
@@ -21,8 +21,8 @@ if [ -z "$1" ] || [ "$1" == "--help" ];then
 	exit 0
 fi
 
-if [ ! -f "build.cfg" ];then
-	echo "Error, missing file build.cfg"
+if [ ! -f "$PWD/build.cfg" ];then
+	echo "Error, missing file $PWD/build.cfg"
 	exit 1
 fi
 
@@ -31,17 +31,17 @@ echo -e "##### ${0##*/} version $VERSION #####\n"
 TIMESTAMP=$(date +%d-%m-%Y)
 GET_VER_NUM=$(grep -m 1 'VERSION=' $NAME.sh | sed 's/^.*=//')
 
-if [ ! -d "builds" ];then
-	echo "Creating directory [builds] ..."
-	mkdir builds
+if [ ! -d "$PWD/builds" ];then
+	echo "Creating directory [$PWD/builds] ..."
+	mkdir $PWD/builds
 fi
 
 if [ "$1" == "--src" ];then
-	if [ ! -d "builds/src" ];then
-		echo "Creating directory [builds/src] ..."
-		mkdir builds/src
+	if [ ! -d "$PWD/builds/src" ];then
+		echo "Creating directory [$PWD/builds/src] ..."
+		mkdir $PWD/builds/src
 	fi
-	if [ -f "./builds/src/$NAME-$GET_VER_NUM.tar" ];then
+	if [ -f "$PWD/builds/src/$NAME-$GET_VER_NUM.tar" ];then
 		echo -e "\033[31mWarning, a source package with version $GET_VER_NUM already exists!\033[0m"
 		read -p "Overwrite [y/n]? " QUEST
 		if [ $QUEST != "y" ];then
@@ -52,22 +52,22 @@ if [ "$1" == "--src" ];then
 	echo "Creating source package of current version ($GET_VER_NUM)."
 	sleep 1
 	echo "Package name: $NAME-$GET_VER_NUM.tar"
-	echo "Application: $NAME" > INFO
-	echo "Version: $GET_VER_NUM" >> INFO
-	echo "Build date: $TIMESTAMP" >> INFO
-	echo "Copyright: $COPY" >> INFO
-	echo "Website: $WEB" >> INFO
-	echo "License: $LICENSE" >> INFO
-	tar --exclude='builds' -cpvf ./builds/src/$NAME-$GET_VER_NUM.tar *
+	echo "Application: $NAME" > $PWD/INFO
+	echo "Version: $GET_VER_NUM" >> $PWD/INFO
+	echo "Build date: $TIMESTAMP" >> $PWD/INFO
+	echo "Copyright: $COPY" >> $PWD/INFO
+	echo "Website: $WEB" >> $PWD/INFO
+	echo "License: $LICENSE" >> $PWD/INFO
+	tar --exclude='builds' -cpvf $PWD/builds/src/$NAME-$GET_VER_NUM.tar *
 	rm INFO
 fi
 
 if [ "$1" == "--pkg" ];then
-	if [ ! -d "builds/pkg" ];then
+	if [ ! -d "$PWD/builds/pkg" ];then
 		echo "Creating directory [builds/pkg] ..."
-		mkdir builds/pkg
+		mkdir $PWD/builds/pkg
 	fi
-	if [ -f "./builds/pkg/$NAME-$GET_VER_NUM.pkg" ];then
+	if [ -f "$PWD/builds/pkg/$NAME-$GET_VER_NUM.pkg" ];then
 		echo -e "\033[31mWarning, a package with version $GET_VER_NUM already exists!\033[0m"
 		read -p "Overwrite [y/n]? " QUEST
 		if [ $QUEST != "y" ];then
@@ -78,38 +78,38 @@ if [ "$1" == "--pkg" ];then
 	echo "Creating package of current version ($GET_VER_NUM)."
 	sleep 1
 	echo "Package name: $NAME-$GET_VER_NUM.pkg"
-	echo "Application: $NAME" > INFO
-	echo "Version: $GET_VER_NUM" >> INFO
-	echo "Build date: $TIMESTAMP" >> INFO
-	echo "Copyright: $COPY" >> INFO
-	echo "Website: $WEB" >> INFO
-	echo "License: $LICENSE" >> INFO
-	tar --exclude={'builds','build.cfg'} -cpvf ./builds/pkg/$NAME-$GET_VER_NUM.pkg *
+	echo "Application: $NAME" > $PWD/INFO
+	echo "Version: $GET_VER_NUM" >> $PWD/INFO
+	echo "Build date: $TIMESTAMP" >> $PWD/INFO
+	echo "Copyright: $COPY" >> $PWD/INFO
+	echo "Website: $WEB" >> $PWD/INFO
+	echo "License: $LICENSE" >> $PWD/INFO
+	tar --exclude={'builds','build.cfg','BUGS','NOTES'} -cpvf $PWD/builds/pkg/$NAME-$GET_VER_NUM.pkg *
 	rm INFO
 fi
 
 if [ "$1" == "--git" ];then
-	if [ ! -d "builds/git" ];then
+	if [ ! -d "$PWD/builds/git" ];then
 		echo "Creating directory [builds/git] ..."
-		mkdir builds/git
+		mkdir $PWD/builds/git
 	fi
 	echo "Preparing version ($GET_VER_NUM) for github."
 	sleep 1
-	FILES=$(ls | grep -v -e "builds" -e "build.cfg" -e "CHANGELOG" -e "TODO")
+	FILES=$(ls | grep -v -e "builds" -e "build.cfg" -e "CHANGELOG" -e "NOTES" -e "BUGS")
 	for f in $FILES;do
-		cp -v $f ./builds/git/
+		cp -v $f $PWD/builds/git/
 	done
-	for script in $(ls ./builds/git/ | grep .sh);do
-		sed -i '2 i\#' ./builds/git/$script
-		sed -i '2 i\# License:     '"$LICENSE"'' ./builds/git/$script
-		sed -i '2 i\# Website:     '"$WEB"'' ./builds/git/$script
-		sed -i '2 i\# Copyright:   '"$COPY"'' ./builds/git/$script
+	for script in $(ls $PWD/builds/git/ | grep .sh);do
+		sed -i '2 i\#' $PWD/builds/git/$script
+		sed -i '2 i\# License:     '"$LICENSE"'' $PWD/builds/git/$script
+		sed -i '2 i\# Website:     '"$WEB"'' $PWD/builds/git/$script
+		sed -i '2 i\# Copyright:   '"$COPY"'' $PWD/builds/git/$script
 		if [ "$script" == "$NAME.sh" ];then
-			sed -i '2 i\# Application: '"$NAME"' (Github version)' ./builds/git/$script
-			sed -i '2 i\#' ./builds/git/$script
+			sed -i '2 i\# Application: '"$NAME"' (Github version)' $PWD/builds/git/$script
+			sed -i '2 i\#' $PWD/builds/git/$script
 		else
-			sed -i '2 i\# File for:    '"$NAME"' (Github version)' ./builds/git/$script
-			sed -i '2 i\#' ./builds/git/$script
+			sed -i '2 i\# File for:    '"$NAME"' (Github version)' $PWD/builds/git/$script
+			sed -i '2 i\#' $PWD/builds/git/$script
 		fi
 	done
 fi
