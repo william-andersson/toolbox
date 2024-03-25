@@ -1,4 +1,9 @@
-# toolbox 
+# toolbox
+
+> [!IMPORTANT]
+> ### This repository is deprecated and replaced with DevKit
+> [DevKit repository](https://github.com/william-andersson/devkit)
+
 ### Automate bash scripting, versioning and install
 - Install by running **`./toolbox-setup.sh`** as root.
   
